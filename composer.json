@@ -1,0 +1,8 @@
+{
+    "name":"ifto/reserva",
+    "autoload":{
+        "psr-4":{
+            "App\\":"app/"
+        }
+    }
+}
