@@ -1,8 +1,9 @@
 <?php
-namespace App;
-use PDO;
 
-class Servidor{
+namespace App;
+
+class Servidor
+{
     public $id;
     public $nome;
     public $matricula;
@@ -11,41 +12,61 @@ class Servidor{
     public $email;
     public $endereco;
     public $dtn;
-    public function cadastrar(){
-        $db= new DataBase();
+
+    public function cadastrar()
+    {
+        $db = new DataBase('servidor');
+
         $db->insert([
-
-            "nome"=> $this->nome,
-            "matricula"=> $this->matricula,
-            "cpf" => $this->cpf,
-            "telefone"=> $this->telefone,
-            "email"=> $this->email,
-            "endereco" => $this->endereco,
-            "dtn" => $this->dtn
-
+            'nome' => $this->nome,
+            'matricula' => $this->matricula,
+            'cpf' => $this->cpf,
+            'telefone' => $this->telefone,
+            'email' => $this->email,
+            'endereco' => $this->endereco,
+            'dtn' => $this->dtn
         ]);
+
         return true;
     }
+
     public function alterar()
     {
-        return new DataBase()->update("id" . $this->id,[
-            
-            "nome"  => $this->nome,
-            "matricula"=> $this->matricula,
-            "cpf" => $this->cpf,
-            "telefone"=> $this->telefone,
-            "email"=> $this->email,
-            "endereco" => $this->endereco,
-            "dtn" => $this->dtn
-        ]);
+        $db = new DataBase('servidor');
 
+        return $db->update(
+            'id = ' . $this->id,
+            [
+                'nome' => $this->nome,
+                'matricula' => $this->matricula,
+                'cpf' => $this->cpf,
+                'telefone' => $this->telefone,
+                'email' => $this->email,
+                'endereco' => $this->endereco,
+                'dtn' => $this->dtn
+            ]
+        );
     }
+
     public function excluir()
     {
-  
+        $db = new DataBase('servidor');
+
+        return $db->delete(
+            'id = ' . $this->id
+        );
     }
-    public function listar()
-    {
-     
+
+    public static function listar(
+        $where = null,
+        $order = null,
+        $limit = null
+    ) {
+        return (new DataBase('servidor'))
+            ->select($where, $order, $limit)
+            ->fetchAll(
+                \PDO::FETCH_CLASS,
+                self::class
+            );
     }
 }
